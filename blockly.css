@@ -1,0 +1,22 @@
+body, html{
+    margin: 0;
+    padding: 0;
+}
+#blocklyArea{
+    height: 100vh;
+    width: 50vw;
+}
+#blocklyDiv{
+    position: absolute;
+}
+#output{
+    height: 50vh;
+    width: 50vw;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+textarea{
+    width: 100%;
+    height: calc(100%);
+}

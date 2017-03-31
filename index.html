@@ -1,0 +1,181 @@
+<html>
+
+<head>
+<!--
+<script src="blockly/blocks_compressed.js"></script>
+<script src="blockly/msg/js/en.js"></script>
+-->
+
+<script src="blockly/blockly_uncompressed.js"></script>
+<script src="blockly/msg/messages.js"></script>
+
+<script src="ha_block.js"></script>
+<script src="ha_block_definitions.js"></script>
+<script src="ha_block_language.js"></script>
+
+
+<!-- https://github.com/jeffsu/json2yaml -->
+<script src="json2yaml-master/src/json2yaml.js"></script>
+
+<link rel="stylesheet" href="blockly.css">
+
+</head>
+<body>
+
+<div id="blocklyArea"></div>
+<div id="output">
+    <textarea id="textarea"></textarea>
+</div>
+<div id="blocklyDiv"></div>
+
+<xml xmlns="http://www.w3.org/1999/xhtml" id="toolbox" style="display: none;">
+  <category name="Triggers" colour="#80a55b">
+    <block type="trigger_zone">
+      <field name="entity_id">[[entity id]]</field>
+      <field name="event">enter</field>
+    </block>
+    <block type="trigger_sun">
+      <field name="upordown">sunset</field>
+    </block>
+    <block type="trigger_template"></block>
+    <block type="trigger_event">
+      <field name="event_type">[[my event]]</field>
+    </block>
+    <block type="trigger_mqtt">
+      <field name="topic">[[/my/topic]]</field>
+    </block>
+    <block type="trigger_state">
+      <field name="entity_id">[[entity id]]</field>
+    </block>
+    <block type="trigger_numeric_state">
+      <field name="entity_id">[[entity id]]</field>
+    </block>
+    <block type="trigger_time">
+      <field name="type">on</field>
+      <field name="minutes">0</field>
+      <field name="seconds">0</field>
+      <field name="minutes_int">0</field>
+      <field name="seconds_int">0</field>
+    </block>
+  </category>
+  <category name="Conditions" colour="#5b5ba5">
+    <block type="condition_logic">
+      <field name="logic">or</field>
+    </block>
+    <block type="condition_zone">
+      <field name="entity_id">[[entity id]]</field>
+    </block>
+    <block type="condition_generic">
+      <field name="condition">sun</field>
+    </block>
+    <block type="condition_sun">
+      <field name="beforeafter">before</field>
+      <field name="upordown">sunset</field>
+    </block>
+    <block type="condition_state">
+      <field name="entity_id">[[entity id]]</field>
+    </block>
+    <block type="condition_numeric_state">
+      <field name="entity_id">[[entity id]]</field>
+    </block>
+    <block type="condition_template"></block>
+    <block type="condition_time"></block>
+  </category>
+  <category name="Actions" colour="#a55b5b">
+    <block type="action">
+      <field name="service">[[service]]</field>
+    </block>
+    <block type="action_delay"></block>
+    <block type="action_wait"></block>
+    <block type="action_event">
+      <field name="event">[[event]]</field>
+    </block>
+  </category>
+  <category name="Values" colour="#a5935b">
+    <block type="val_text">
+      <field name="text">[text]</field>
+    </block>
+    <block type="val_property"></block>
+    <block type="property">
+      <field name="name">[[name]]</field>
+    </block>
+    <block type="val_template">
+      <field name="template">{{template}}</field>
+    </block>
+    <block type="val_time">
+      <field name="hours">0</field>
+      <field name="minutes">0</field>
+      <field name="seconds">0</field>
+    </block>
+    <block type="val_time_offset">
+      <field name="type">+</field>
+      <field name="hours">0</field>
+      <field name="minutes">0</field>
+      <field name="seconds">0</field>
+    </block>
+  </category>
+</xml>
+<xml xmlns="http://www.w3.org/1999/xhtml" id="workspaceBlocks" style="display:none"></xml>
+
+<script>
+    var blocklyArea = document.getElementById('blocklyArea');
+    var blocklyDiv = document.getElementById('blocklyDiv');
+    var workspace = Blockly.inject(blocklyDiv, {toolbox: document.getElementById('toolbox')});
+    var workspaceBlocks = document.getElementById("workspaceBlocks"); 
+
+    /* Load blocks to workspace. */
+    Blockly.Xml.domToWorkspace(workspaceBlocks, workspace);
+  
+  var onresize = function(e) {
+    // Compute the absolute coordinates and dimensions of blocklyArea.
+    var element = blocklyArea;
+    var x = 0;
+    var y = 0;
+    do {
+      x += element.offsetLeft;
+      y += element.offsetTop;
+      element = element.offsetParent;
+    } while (element);
+    // Position blocklyDiv over blocklyArea.
+    blocklyDiv.style.left = x + 'px';
+    blocklyDiv.style.top = y + 'px';
+    blocklyDiv.style.width = blocklyArea.offsetWidth + 'px';
+    blocklyDiv.style.height = blocklyArea.offsetHeight + 'px';
+  };
+  window.addEventListener('resize', onresize, false);
+  onresize();
+  Blockly.svgResize(workspace);
+
+  var startBlock = workspace.newBlock('automation');
+  startBlock.initSvg();
+  startBlock.render();
+  startBlock.setDeletable(false);
+
+  
+function myUpdateFunction(event) {
+  console.log('updating blocks');
+  var code = Blockly.JSON.workspaceToCode(workspace);
+  var compiledCode = '';
+  try{
+  compiledCode = JSON.parse(code);
+  compiledCode = JSON.stringify(compiledCode, null, 2);
+  } catch(e) {
+    console.log('error parsing the input!');
+    console.log(code);
+    console.log(e);
+    // show broken code for debugging puropses
+    compiledCode = 'ERROR\n\n' + code;
+  }
+  
+  document.getElementById('textarea').value = compiledCode;
+  
+}
+
+workspace.addChangeListener(myUpdateFunction);
+
+
+</script>
+
+</body>
+
+</html>
