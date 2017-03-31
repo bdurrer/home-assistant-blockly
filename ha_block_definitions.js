@@ -64,7 +64,7 @@ Blockly.Blocks['condition_sun'] = {
 Blockly.Blocks['val_text'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldTextInput("[text]"), "text");
+        .appendField(new Blockly.FieldTextInput("[[text]]"), "text");
     this.setOutput(true, "String");
     this.setColour(65);
     this.setTooltip('');
@@ -116,7 +116,7 @@ Blockly.Blocks['condition_numeric_state'] = {
 Blockly.Blocks['val_template'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldTextInput("{{template}}"), "template");
+        .appendField(new Blockly.FieldTextInput("[[template]]"), "template");
     this.setOutput(true, ["String", "val_template"]);
     this.setColour(65);
     this.setTooltip('value template');

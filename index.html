@@ -25,6 +25,7 @@
 <div id="blocklyArea"></div>
 <div id="output">
     <textarea id="textarea"></textarea>
+    <pre id="highlight"></pre>
 </div>
 <div id="blocklyDiv"></div>
 
@@ -93,14 +94,14 @@
   </category>
   <category name="Values" colour="#a5935b">
     <block type="val_text">
-      <field name="text">[text]</field>
+      <field name="text">[[text]]</field>
     </block>
     <block type="val_property"></block>
     <block type="property">
       <field name="name">[[name]]</field>
     </block>
     <block type="val_template">
-      <field name="template">{{template}}</field>
+      <field name="template">[[template]]</field>
     </block>
     <block type="val_time">
       <field name="hours">0</field>
@@ -156,9 +157,17 @@ function myUpdateFunction(event) {
   console.log('updating blocks');
   var code = Blockly.JSON.workspaceToCode(workspace);
   var compiledCode = '';
+  var highlightedCode = '';
   try{
   compiledCode = JSON.parse(code);
   compiledCode = JSON.stringify(compiledCode, null, 2);
+  
+  function highlight(str, p1, offset, s) {
+    return '<span style="color:red">[['+encodeURIComponent(p1)+']]</span>'
+  }
+  
+  highlightedCode = compiledCode.replace(/\[\[(.*?)\]\]/ig, highlight);
+  
   } catch(e) {
     console.log('error parsing the input!');
     console.log(code);
@@ -168,6 +177,7 @@ function myUpdateFunction(event) {
   }
   
   document.getElementById('textarea').value = compiledCode;
+  document.getElementById('highlight').innerHTML = highlightedCode;
   
 }
 
