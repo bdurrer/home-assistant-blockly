@@ -20,6 +20,7 @@ Blockly.JSON['automation'] = function(block) {
 };
 
 // ------------------------- VALUE TYPES -----------------------------
+(function(){
 
 Blockly.JSON['val_text'] = function(block) {
   var text_text = block.getFieldValue('text');
@@ -136,7 +137,10 @@ Blockly.JSON['val_property'] = function(block) {
   return [code, Blockly.JSON.ORDER_NONE];
 };
 
-// ------------------------- CONDITIONS
+
+})();
+
+// ------------------------- CONDITIONS ------------------------------
 
 Blockly.JSON['condition_logic'] = function(block) {
   var operator = block.getFieldValue('logic');
@@ -230,6 +234,10 @@ Blockly.JSON['condition_zone'] = function(block) {
   return code;
 };
 
+
+
+// ------------------------- TRIGGERS --------------------------------
+
 Blockly.JSON['trigger_event'] = function(block) {
   var text_event_type = block.getFieldValue('event_type');
   var statements_event_data = Blockly.JSON.statementToCode(block, 'event_data');
@@ -242,8 +250,15 @@ Blockly.JSON['trigger_mqtt'] = function(block) {
   var text_topic = block.getFieldValue('topic');
   var value_payload = Blockly.JSON.valueToCode(block, 'payload', Blockly.JSON.ORDER_NONE);
   // TODO: Assemble JSON into code variable.
-  var code = '...;\n';
-  return code;
+  var code = '{';
+  code += '"platform": "mqtt"';
+  code += ', "topic": "' + text_topic + '"';
+  
+  if (value_payload && value_payload !=='') {
+      code += ', "payload": ' + value_payload;
+  }
+  
+  return code + '}\n';
 };
 
 Blockly.JSON['trigger_numeric_state'] = function(block) {
@@ -270,7 +285,15 @@ Blockly.JSON['trigger_sun'] = function(block) {
   var dropdown_upordown = block.getFieldValue('upordown');
   var value_offset = Blockly.JSON.valueToCode(block, 'offset', Blockly.JSON.ORDER_NONE);
   // TODO: Assemble JSON into code variable.
-  var code = '...;\n';
+  var code = '{ "platform": "sun"';
+  code+= ',"event": "' + dropdown_upordown + '"';
+  
+  if (value_offset) {
+      code += ',"offset":' + value_offset;
+  }
+  
+  code += '}\n'; 
+  
   return [code, Blockly.JSON.ORDER_NONE];
 };
 

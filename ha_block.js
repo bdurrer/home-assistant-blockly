@@ -75,7 +75,7 @@ Blockly.JSON.generalBlockToObj  = function(block) {
 };
 
 Blockly.JSON.blockToCode = function(block) {
-  console.log('blockToCode:' + ((block) ? block.type : 'undef'));
+  // console.log('blockToCode:' + ((block) ? block.type : 'undef'));
   if (!block) {
     return '';
   }
@@ -100,7 +100,7 @@ Blockly.JSON.scrub_ = function(block, code) {
 
 
 Blockly.JSON.statementToCode = function(block, name, asArray) {
-    console.log('statementToCode:' + ((block) ? block.type : 'undef') + '--' + name);
+  // console.log('statementToCode:' + ((block) ? block.type : 'undef') + '--' + name);
   var targetBlock = block.getInputTargetBlock(name);
   var code = this.blockToCode(targetBlock);
   if(Array.isArray(code)) {
