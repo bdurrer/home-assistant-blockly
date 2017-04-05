@@ -1,30 +1,20 @@
 <html>
 
 <head>
-<!--
-<script src="blockly/blocks_compressed.js"></script>
-<script src="blockly/msg/js/en.js"></script>
--->
+  <!--
+  <script src="blockly/blocks_compressed.js"></script>
+  <script src="blockly/msg/js/en.js"></script>
+  -->
 
-<script src="blockly/blockly_uncompressed.js"></script>
-<script src="blockly/msg/messages.js"></script>
-<script src="blockly/appengine/storage.js"></script>
+  <script src="../blockly/blockly_uncompressed.js"></script>
+  <script src="../blockly/msg/messages.js"></script>
+  <script src="../blockly/appengine/storage.js"></script>
 
-<script src="ha_block.js"></script>
-<script src="definitions/automation.js"></script>
-<script src="definitions/values.js"></script>
-<script src="definitions/triggers.js"></script>
-<script src="definitions/conditions.js"></script>
-<script src="definitions/actions.js"></script>
+  <!-- https://github.com/jeffsu/json2yaml -->
+  <script src="../json2yaml-master/src/json2yaml.js"></script>
 
-<script src="ha_block_language.js"></script>
-
-
-<!-- https://github.com/jeffsu/json2yaml -->
-<script src="json2yaml-master/src/json2yaml.js"></script>
-
-<link rel="stylesheet" href="blockly.css">
-
+  <link rel="stylesheet" href="blockly.css">
+  <title>Automation Configurator</title>
 </head>
 <body>
 
@@ -124,82 +114,7 @@
 </xml>
 <xml xmlns="http://www.w3.org/1999/xhtml" id="workspaceBlocks" style="display:none"></xml>
 
-<script>
-  var blocklyArea = document.getElementById('blocklyArea');
-  var blocklyDiv = document.getElementById('blocklyDiv');
-  var workspace = Blockly.inject(blocklyDiv, {toolbox: document.getElementById('toolbox')});
-  var workspaceBlocks = document.getElementById("workspaceBlocks"); 
-
-  /* Load blocks to workspace. */
-  Blockly.Xml.domToWorkspace(workspaceBlocks, workspace);
-  
-  var onresize = function(e) {
-    // Compute the absolute coordinates and dimensions of blocklyArea.
-    var element = blocklyArea;
-    var x = 0;
-    var y = 0;
-    do {
-      x += element.offsetLeft;
-      y += element.offsetTop;
-      element = element.offsetParent;
-    } while (element);
-    // Position blocklyDiv over blocklyArea.
-    blocklyDiv.style.left = x + 'px';
-    blocklyDiv.style.top = y + 'px';
-    blocklyDiv.style.width = blocklyArea.offsetWidth + 'px';
-    blocklyDiv.style.height = blocklyArea.offsetHeight + 'px';
-  };
-  window.addEventListener('resize', onresize, false);
-  onresize();
-  Blockly.svgResize(workspace);
- 
-  
-  function myUpdateFunction(event) {
-    console.log('updating blocks');
-    var code = Blockly.JSON.workspaceToCode(workspace);
-    var compiledCode = '';
-    var highlightedCode = '';
-    try{
-    compiledCode = JSON.parse(code);
-    compiledCode = JSON.stringify(compiledCode, null, 2);
-    
-    function highlight(str, p1, offset, s) {
-      return '<span style="color:red">[['+encodeURIComponent(p1)+']]</span>'
-    }
-    
-    highlightedCode = compiledCode.replace(/\[\[(.*?)\]\]/ig, highlight);
-    
-    } catch(e) {
-      console.log('error parsing the input!');
-      console.log(code);
-      console.log(e);
-      // show broken code for debugging puropses
-      compiledCode = 'ERROR\n\n' + code;
-    }
-    
-    document.getElementById('textarea').value = compiledCode;
-    document.getElementById('highlight').innerHTML = highlightedCode;
-    
-  }
-
-  workspace.addChangeListener(myUpdateFunction);
-  //window.setTimeout(BlocklyStorage.restoreBlocks, 5);
-  BlocklyStorage.backupOnUnload();
-  
-  function restore() {
-    BlocklyStorage.restoreBlocks();
-    var blocks = workspace.getTopBlocks(false);
-    if(blocks.length === 0) {
-      var startBlock = workspace.newBlock('automation');
-      startBlock.initSvg();
-      startBlock.render();
-      //startBlock.setDeletable(false);
-    }
-  }
-  window.setTimeout(restore, 5);
-
-</script>
-
+<script src="index.js"></script>
 </body>
 
 </html>

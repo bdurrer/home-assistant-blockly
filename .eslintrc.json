@@ -1,0 +1,22 @@
+{
+  "extends": "eslint-config-airbnb-base",
+  "env": {
+    "browser": true,
+    "node": true,
+    "jasmine": true
+  },
+  "globals": {
+    "Blockly": false,
+    "BlocklyStorage": false
+  },
+  "rules": {
+    "max-len": ["error", 170],
+    "indent" : [2, 2],
+    "comma-dangle": [2, "never"],
+    "func-names": "off",
+    "global-require": "off",
+    "no-underscore-dangle": "off",
+    "import/no-extraneous-dependencies": "off",
+    "no-plusplus": "off"
+  }
+}
