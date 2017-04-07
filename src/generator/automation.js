@@ -2,21 +2,20 @@
 
 Blockly.JSON['automation'] = function (block) {
   const alias = block.getFieldValue('alias');
-  const statements_triggers = Blockly.JSON.statementToCode(block, 'triggers');
-  const statements_conditions = Blockly.JSON.statementToCode(block, 'conditions');
-  const statements_actions = Blockly.JSON.statementToCode(block, 'actions');
+  const trigger = Blockly.JSON.statementToCode(block, 'triggers');
+  const condition = Blockly.JSON.statementToCode(block, 'conditions', Blockly.JSON.MODE_ARRAY);
+  const action = Blockly.JSON.statementToCode(block, 'actions');
 
-  let code = `{"alias": "${alias}"`;
+  const code = {
+    alias,
+    trigger,
+    action
+  };
 
-  if (statements_triggers) {
-    code += `,"trigger": ${statements_triggers}`;
+  if (condition.length > 0) {
+    // it's illegal to have multiple conditions on the top level. Use a logical condition
+    code.condition = condition[0];
   }
-  if (statements_conditions) {
-    code += `,"condition": ${statements_conditions}`;
-  }
-  if (statements_actions) {
-    code += `,"action": ${statements_actions}`;
-  }
-  code += '}';
+
   return code;
 };

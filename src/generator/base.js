@@ -36,26 +36,35 @@ Blockly.JSON.ORDER_ASSIGNMENT = 16; // = += -= *= /= %= <<= >>= ...
 Blockly.JSON.ORDER_COMMA = 17; // ,
 Blockly.JSON.ORDER_NONE = 99; // (...)
 
+
+Blockly.JSON.MODE_ARRAY = 1;
+Blockly.JSON.MODE_OBJECT = 2;
+Blockly.JSON.MODE_STRING = 3;
+
 // goog.asserts.ENABLE_ASSERTS = false;
 
 Blockly.JSON.workspaceToCode = function (workspace) {
   const topBlocks = workspace.getTopBlocks(false);
-  let jsonText = '';
+  const result = [];
   for (let i = 0; i < topBlocks.length; i++) {
     const block = topBlocks[i];
 
     if (block.type === 'automation') {
       const jsonStructure = this.generalBlockToObj(block);
-      jsonText += jsonStructure; // JSON.stringify(json_structure, null, 4) + '\n\n';
+      result.push(jsonStructure); // JSON.stringify(json_structure, null, 4) + '\n\n';
     }
   }
 
-  return jsonText;
+  if (result.length === 0) {
+    return null;
+  }
+
+  return result.length === 1 ? result[0] : result;
 };
 
 Blockly.JSON.generalBlockToObj = function (block) {
   if (block) {
-    // dispatcher:
+    // dispatcher: block-specific transformer
     const func = this[block.type];
     if (func) {
       return func.call(this, block);
@@ -69,7 +78,7 @@ Blockly.JSON.generalBlockToObj = function (block) {
 Blockly.JSON.blockToCode = function (block) {
   // console.log('blockToCode:' + ((block) ? block.type : 'undef'));
   if (!block) {
-    return '';
+    return null;
   }
   if (block.disabled) {
     // Skip past this block if it is disabled.
@@ -82,53 +91,69 @@ Blockly.JSON.blockToCode = function (block) {
 };
 
 Blockly.JSON.scrub_ = function (block, code) {
-  if (code === null) {
-    return '';
-  } // Block has handled code generation itself
-
-  const nextBlock = block.nextConnection && block.nextConnection.targetBlock();
-
-  // this block has a sibling inside a statement, follow it!
-  const nextCode = this.blockToCode(nextBlock);
-  return code + nextCode;
+  // blockToCode is overwritten, this should never be called
+  /* eslint-disable no-console */
+  console.log('UH OH, something called the scrubber!');
+  console.log(block);
+  console.log(code);
+  /* eslint-enable no-console */
 };
 
-Blockly.JSON.statementToCode = function (block, name, asArray) {
+Blockly.JSON.statementToCode = function (block, name, mode = Blockly.JSON.MODE_ARRAY) {
   let targetBlock = block.getInputTargetBlock(name);
   let code = this.blockToCode(targetBlock);
+  let mergedObject = {};
   if (Array.isArray(code)) {
+    // ignore order setting
     code = code[0];
   }
 
-  const elements = [code];
+  const elements = [];
+  if (code !== null) {
+    elements.push(code);
+  }
+
+  if (typeof code !== 'object' && mode === Blockly.JSON.MODE_OBJECT) {
+    throw Error(`cannot use object mode with data type ${typeof code} from block '${targetBlock.type}'. Use array mode or make the transformer return objects`);
+  }
+  mergedObject = Object.assign(mergedObject, code);
 
   if (targetBlock) {
     targetBlock = targetBlock.nextConnection && targetBlock.nextConnection.targetBlock();
 
     if (targetBlock) {
-      // ok this is a list of blocks, build an array.
-      code = `[\n${code}`;
-
       let i = 0;
       for (i = 0; targetBlock !== null && i < 200; i++) {
-        let nextCode = this.blockToCode(targetBlock);
-        if (Array.isArray(nextCode)) {
-          nextCode = nextCode[0];
+        code = this.blockToCode(targetBlock);
+        if (Array.isArray(code)) {
+          // ignore order setting
+          code = code[0];
         }
-        elements.push(nextCode);
-        code += `,${nextCode}`;
+        if (typeof code !== 'object' && mode === Blockly.JSON.MODE_OBJECT) {
+          throw Error(`cannot use object mode with data type ${typeof code} from block '${targetBlock.type}'. Use array mode or make the transformer return objects`);
+        }
+        if (code !== null) {
+          elements.push(code);
+        }
+        mergedObject = Object.assign(mergedObject, code);
         targetBlock = targetBlock.nextConnection && targetBlock.nextConnection.targetBlock();
       }
-      if (i >= 200) {
-        throw Error(`Block statement ${name} looped through following siblings over 200 times, something is obviously wrong here`);
+      if (i >= 100) {
+        throw Error(`Block statement ${name} looped through following siblings over 100 times, something is obviously wrong here`);
       }
-      code += ']';
     }
   }
 
-  if (asArray === true) {
+  if (mode === Blockly.JSON.MODE_ARRAY) {
     return elements;
   }
 
-  return code;
+  if (mode === Blockly.JSON.MODE_OBJECT) {
+    if (elements.length === 0) {
+      return null;
+    }
+    return mergedObject;
+  }
+
+  throw Error('unknown statement mode');
 };

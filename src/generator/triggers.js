@@ -2,23 +2,16 @@
 
 Blockly.JSON['trigger_event'] = function (block) {
   const eventType = block.getFieldValue('event_type');
-  const eventData = Blockly.JSON.statementToCode(block, 'event_data', true);
-  let code = '{ "platform": "event"';
-  code += `,"event_type": "${eventType}"`;
-  if (eventData.length > 0) {
-    code += ',"event_data": {';
-    // properties is an array of strings with "name: value"
-    for (let i = 0; i < eventData.length; i++) {
-      if (i > 0) {
-        code += ',';
-      }
-      if (eventData[i] !== '') {
-        code += eventData[i];
-      }
-    }
-    code += '}';
+  const eventData = Blockly.JSON.statementToCode(block, 'event_data', Blockly.JSON.MODE_OBJECT);
+
+  const code = {
+    platform: 'event',
+    event_type: eventType
+  };
+
+  if (eventData) {
+    code.event_data = eventData;
   }
-  code += '}\n';
   return code;
 };
 
@@ -43,7 +36,7 @@ Blockly.JSON['trigger_numeric_state'] = function (block) {
   const value_below = Blockly.JSON.valueToCode(block, 'below', Blockly.JSON.ORDER_NONE);
   const value_val_template = Blockly.JSON.valueToCode(block, 'val_template', Blockly.JSON.ORDER_NONE);
   // TODO: Assemble JSON into code constiable.
-  let code = '...;\n';
+  let code = {TODO: '[[implement me!]]' };
   return code;
 };
 
@@ -53,7 +46,7 @@ Blockly.JSON['trigger_state'] = function (block) {
   const value_to = Blockly.JSON.valueToCode(block, 'to', Blockly.JSON.ORDER_NONE);
   const value_for = Blockly.JSON.valueToCode(block, 'for', Blockly.JSON.ORDER_NONE);
   // TODO: Assemble JSON into code constiable.
-  let code = '...;\n';
+  let code = {TODO: '[[implement me!]]' };
   return code;
 };
 
@@ -76,7 +69,7 @@ Blockly.JSON['trigger_sun'] = function (block) {
 Blockly.JSON['trigger_template'] = function (block) {
   const value_value_template = Blockly.JSON.valueToCode(block, 'value_template', Blockly.JSON.ORDER_NONE);
   // TODO: Assemble JSON into code constiable.
-  let code = '...;\n';
+  let code = {TODO: '[[implement me!]]' };
   return code;
 };
 
@@ -88,7 +81,7 @@ Blockly.JSON['trigger_time'] = function (block) {
   const number_minutes_int = block.getFieldValue('minutes_int');
   const number_seconds_int = block.getFieldValue('seconds_int');
   // TODO: Assemble JSON into code constiable.
-  let code = '...;\n';
+  let code = {TODO: '[[implement me!]]' };
   return code;
 };
 
@@ -96,6 +89,6 @@ Blockly.JSON['trigger_zone'] = function (block) {
   const text_entity_id = block.getFieldValue('entity_id');
   const dropdown_event = block.getFieldValue('event');
   // TODO: Assemble JSON into code constiable.
-  let code = '...;\n';
+  let code = {TODO: '[[implement me!]]' };
   return code;
 };
