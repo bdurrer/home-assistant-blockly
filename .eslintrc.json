@@ -11,7 +11,9 @@
   },
   "rules": {
     "max-len": ["error", 170],
-    "indent" : [2, 2],
+    "indent" : [2, 2, {
+        "MemberExpression": 1
+      }],
     "comma-dangle": [2, "never"],
     "func-names": "off",
     "global-require": "off",

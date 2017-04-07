@@ -3,7 +3,7 @@ Blockly.Blocks.condition_logic = {
     this.appendDummyInput().appendField('COMBINE CONDITIONS');
     this.appendDummyInput().appendField('when').appendField(new Blockly.FieldDropdown([['any is', 'or'], ['all are', 'and']]), 'logic').appendField('true of the');
     this.appendStatementInput('conditions')
-      .setCheck(['condition_logic', 'condition_generic', 'condition_sun', 'condition_numeric_state', 'condition_state', 'condition_template', 'condition_zone'])
+      .setCheck('condition')
       .appendField('nested conditions:');
     this.setInputsInline(false);
     this.setPreviousStatement(true, 'condition');
@@ -112,7 +112,7 @@ Blockly.Blocks.condition_zone = {
   init() {
     this.appendDummyInput().appendField('ZONE');
     this.appendDummyInput().appendField('entity').appendField(new Blockly.FieldTextInput('[[entity id]]'), 'entity_id');
-    this.appendValueInput('state').setCheck('String').setAlign(Blockly.ALIGN_RIGHT).appendField('is in zone');
+    this.appendValueInput('zone').setCheck('String').setAlign(Blockly.ALIGN_RIGHT).appendField('is in zone');
     this.setPreviousStatement(true, 'condition');
     this.setNextStatement(true, 'condition');
     this.setColour(230);

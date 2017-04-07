@@ -34,7 +34,7 @@ Blockly.JSON['val_template'] = function (block) {
 
 Blockly.JSON['val_number'] = function (block) {
   const value_number = block.getFieldValue('number');
-  const code = Number(value_number);
+  const code = `${Number(value_number)}`;
   return [code, Blockly.JSON.ORDER_NONE];
 };
 

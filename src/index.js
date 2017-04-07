@@ -29,18 +29,19 @@ window.addEventListener('resize', onWindowResize, false);
 onWindowResize();
 Blockly.svgResize(workspace);
 
-function highlight(str, p1) {
-  return `<span style="color:red">[[${encodeURIComponent(p1)}]]</span>`;
+function highlightUndefValues(str, p1) {
+  return `<span style="color:red">[[${p1}]]</span>`;
 }
 
 function onWorkspaceChange() {
   const codeAsString = Blockly.JSON.workspaceToCode(workspace);
   let compiledJsonCode = '';
   let highlightedCode = '';
+  let yamlCode = '';
   try {
     compiledJsonCode = JSON.parse(codeAsString);
     compiledJsonCode = JSON.stringify(compiledJsonCode, null, 2);
-    highlightedCode = compiledJsonCode.replace(/\[\[(.*?)\]\]/ig, highlight);
+    highlightedCode = compiledJsonCode.replace(/\[\[(.*?)\]\]/ig, highlightUndefValues);
   } catch (e) {
     /* eslint-disable no-console */
     console.log('error parsing the input!');
@@ -50,10 +51,17 @@ function onWorkspaceChange() {
 
     // show broken code for debugging puropses
     compiledJsonCode = `ERROR in code:\n\n${codeAsString}`;
+    highlightedCode = compiledJsonCode;
   }
 
-  document.getElementById('textarea').value = compiledJsonCode;
-  document.getElementById('highlight').innerHTML = highlightedCode;
+  try {
+    yamlCode = json2yaml(compiledJsonCode);
+  } catch (e) {
+    yamlCode = 'ERROR';
+  }
+
+  document.getElementById('jsonArea').innerHTML = highlightedCode;
+  document.getElementById('yamlArea').innerHTML = yamlCode;
 }
 
 workspace.addChangeListener(onWorkspaceChange);

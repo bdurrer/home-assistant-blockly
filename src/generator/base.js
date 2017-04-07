@@ -107,7 +107,7 @@ Blockly.JSON.statementToCode = function (block, name, asArray) {
 
     if (targetBlock) {
       // ok this is a list of blocks, build an array.
-      code = `[${code}`;
+      code = `[\n${code}`;
 
       let i = 0;
       for (i = 0; targetBlock !== null && i < 200; i++) {

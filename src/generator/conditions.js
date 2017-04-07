@@ -6,7 +6,7 @@ Blockly.JSON['condition_logic'] = function (block) {
 
   let code = `{ "condition": "${operator}"`;
   code += `, "conditions": ${conditions}`;
-  code += '}';
+  code += '}\n';
 
   return code;
 };
@@ -24,7 +24,7 @@ Blockly.JSON['condition_generic'] = function (block) {
     }
   }
 
-  code += '}';
+  code += '}\n';
 
   return code;
 };
@@ -45,49 +45,97 @@ Blockly.JSON['condition_sun'] = function (block) {
     code += `,"${offsetName}":${value_offset}`;
   }
 
-  code += '}';
+  code += '}\n';
   return code;
 };
 
 Blockly.JSON['condition_numeric_state'] = function (block) {
-  const text_entity_id = block.getFieldValue('entity_id');
-  const value_above = Blockly.JSON.valueToCode(block, 'above', Blockly.JSON.ORDER_NONE);
-  const value_below = Blockly.JSON.valueToCode(block, 'below', Blockly.JSON.ORDER_NONE);
-  const value_val_template = Blockly.JSON.valueToCode(block, 'val_template', Blockly.JSON.ORDER_NONE);
-  // TODO: Assemble JSON into code constiable.
-  let code = '...;\n';
+  const entity_id = block.getFieldValue('entity_id');
+  const above = Blockly.JSON.valueToCode(block, 'above', Blockly.JSON.ORDER_NONE);
+  const below = Blockly.JSON.valueToCode(block, 'below', Blockly.JSON.ORDER_NONE);
+  const valueTemplate = Blockly.JSON.valueToCode(block, 'val_template', Blockly.JSON.ORDER_NONE);
+
+  let code = '{"condition":"numeric_state"';
+  code += `,"entity_id": "${entity_id}"`;
+
+  if (above !== '') {
+    code += `,"above": ${above}`;
+  }
+
+  if (below !== '') {
+    code += `,"below": ${below}`;
+  }
+  if (valueTemplate && valueTemplate !== '') {
+    code += `,"value_template": ${valueTemplate}`;
+  }
+
+  code += '}\n';
   return code;
 };
 
 Blockly.JSON['condition_state'] = function (block) {
-  const text_entity_id = block.getFieldValue('entity_id');
-  const value_state = Blockly.JSON.valueToCode(block, 'state', Blockly.JSON.ORDER_NONE);
-  const value_for = Blockly.JSON.valueToCode(block, 'for', Blockly.JSON.ORDER_NONE);
-  // TODO: Assemble JSON into code constiable.
-  let code = '...;\n';
+  const entity_id = block.getFieldValue('entity_id');
+  const state = Blockly.JSON.valueToCode(block, 'state', Blockly.JSON.ORDER_NONE);
+  const forTime = Blockly.JSON.valueToCode(block, 'for', Blockly.JSON.ORDER_NONE);
+
+  let code = '{"condition":"numeric_state"';
+  code += `,"entity_id": "${entity_id}"`;
+
+  if (state !== '') {
+    code += `,"state": ${state}`;
+  }
+
+  if (forTime !== '') {
+    code += `,"for": ${forTime}`;
+  }
+
+  code += '}\n';
   return code;
 };
 
 Blockly.JSON['condition_template'] = function (block) {
-  const value_value_template = Blockly.JSON.valueToCode(block, 'value_template', Blockly.JSON.ORDER_NONE);
-  // TODO: Assemble JSON into code constiable.
-  let code = '...;\n';
+  const valueTemplate = Blockly.JSON.valueToCode(block, 'value_template', Blockly.JSON.ORDER_NONE);
+
+  let code = '{"condition": "template"';
+
+  if (valueTemplate !== '') {
+    code += `,"value_template": ${valueTemplate}`;
+  }
+
+  code += '}\n';
   return code;
 };
 
 Blockly.JSON['condition_time'] = function (block) {
-  const value_after = Blockly.JSON.valueToCode(block, 'after', Blockly.JSON.ORDER_NONE);
-  const value_before = Blockly.JSON.valueToCode(block, 'before', Blockly.JSON.ORDER_NONE);
-  const value_weekday = Blockly.JSON.valueToCode(block, 'weekday', Blockly.JSON.ORDER_NONE);
-  // TODO: Assemble JSON into code constiable.
-  let code = '...;\n';
+  const after = Blockly.JSON.valueToCode(block, 'after', Blockly.JSON.ORDER_NONE);
+  const before = Blockly.JSON.valueToCode(block, 'before', Blockly.JSON.ORDER_NONE);
+  const weekday = Blockly.JSON.valueToCode(block, 'weekday', Blockly.JSON.ORDER_NONE);
+
+  let code = '{"condition": "time"';
+
+  if (after !== '') {
+    code += `,"after": ${after}`;
+  }
+  if (before !== '') {
+    code += `,"before": ${before}`;
+  }
+  if (weekday !== '') {
+    code += `,"weekday": ${weekday}`;
+  }
+  code += '}\n';
   return code;
 };
 
 Blockly.JSON['condition_zone'] = function (block) {
-  const text_entity_id = block.getFieldValue('entity_id');
-  const value_state = Blockly.JSON.valueToCode(block, 'state', Blockly.JSON.ORDER_NONE);
-  // TODO: Assemble JSON into code constiable.
-  let code = '...;\n';
+  const entity_id = block.getFieldValue('entity_id');
+  const zone = Blockly.JSON.valueToCode(block, 'zone', Blockly.JSON.ORDER_NONE);
+  let code = '{"condition": "zone"';
+  code += `,"entity_id": "${entity_id}"`;
+
+  if (zone !== '') {
+    code += `,"zone": ${zone}`;
+  }
+
+  code += '}\n';
   return code;
 };

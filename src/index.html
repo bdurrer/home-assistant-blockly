@@ -20,8 +20,8 @@
 
 <div id="blocklyArea"></div>
 <div id="output">
-    <textarea id="textarea"></textarea>
-    <pre id="highlight"></pre>
+    <pre id="yamlArea"></pre>
+    <pre id="jsonArea"></pre>
 </div>
 <div id="blocklyDiv"></div>
 
@@ -92,6 +92,9 @@
     <block type="val_text">
       <field name="text">[[text]]</field>
     </block>
+    <block type="val_number">
+      <field name="number">0</field>
+    </block>
     <block type="val_property"></block>
     <block type="property">
       <field name="name">[[name]]</field>
@@ -109,6 +112,15 @@
       <field name="hours">0</field>
       <field name="minutes">0</field>
       <field name="seconds">0</field>
+    </block>
+    <block type="val_weekday">
+      <field name="mon">TRUE</field>
+      <field name="tue">TRUE</field>
+      <field name="wed">TRUE</field>
+      <field name="thu">TRUE</field>
+      <field name="fri">TRUE</field>
+      <field name="sat">TRUE</field>
+      <field name="sun">TRUE</field>
     </block>
   </category>
 </xml>

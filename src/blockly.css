@@ -10,13 +10,21 @@ body, html{
     position: absolute;
 }
 #output{
-    height: 50vh;
+    height: 80vh;
     width: 50vw;
     position: absolute;
     right: 0;
     top: 0;
 }
-textarea{
-    width: 100%;
-    height: calc(100%);
+
+#yamlArea,
+#jsonArea{
+  display: inline-block;
+  border: none;
+  border-bottom: 1px solid #c6c6c6;
+  overflow: auto;
+  margin: 0;
+  width: 100%;
+  height: 50%;
+  background-color: transparent;
 }

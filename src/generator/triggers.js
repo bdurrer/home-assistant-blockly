@@ -1,10 +1,24 @@
 /* eslint dot-notation: "off", camelcase: "off" */
 
 Blockly.JSON['trigger_event'] = function (block) {
-  const text_event_type = block.getFieldValue('event_type');
-  const statements_event_data = Blockly.JSON.statementToCode(block, 'event_data');
-  // TODO: Assemble JSON into code constiable.
-  let code = '...;\n';
+  const eventType = block.getFieldValue('event_type');
+  const eventData = Blockly.JSON.statementToCode(block, 'event_data', true);
+  let code = '{ "platform": "event"';
+  code += `,"event_type": "${eventType}"`;
+  if (eventData.length > 0) {
+    code += ',"event_data": {';
+    // properties is an array of strings with "name: value"
+    for (let i = 0; i < eventData.length; i++) {
+      if (i > 0) {
+        code += ',';
+      }
+      if (eventData[i] !== '') {
+        code += eventData[i];
+      }
+    }
+    code += '}';
+  }
+  code += '}\n';
   return code;
 };
 
