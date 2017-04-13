@@ -1,5 +1,7 @@
 /* eslint dot-notation: "off", camelcase: "off" */
 
+// TODO: add homeassistant trigger
+
 Blockly.JSON['trigger_event'] = function (block) {
   const eventType = block.getFieldValue('event_type');
   const eventData = Blockly.JSON.statementToCode(block, 'event_data', Blockly.JSON.MODE_OBJECT);
@@ -9,86 +11,103 @@ Blockly.JSON['trigger_event'] = function (block) {
     event_type: eventType
   };
 
-  if (eventData) {
-    code.event_data = eventData;
-  }
+  Blockly.JSON.addField(code, 'event_data', eventData);
   return code;
 };
 
 Blockly.JSON['trigger_mqtt'] = function (block) {
-  const text_topic = block.getFieldValue('topic');
-  const value_payload = Blockly.JSON.valueToCode(block, 'payload', Blockly.JSON.ORDER_NONE);
-  // TODO: Assemble JSON into code constiable.
-  let code = '{';
-  code += '"platform": "mqtt"';
-  code += `, "topic": "${text_topic}"`;
+  const topic = block.getFieldValue('topic');
+  const payload = Blockly.JSON.valueToCode(block, 'payload', Blockly.JSON.ORDER_NONE);
 
-  if (value_payload && value_payload !== '') {
-    code += `, "payload": ${value_payload}`;
-  }
+  const code = {
+    platform: 'mqtt',
+    topic
+  };
 
-  return `${code}}\n`;
+  Blockly.JSON.addField(code, 'payload', payload);
+
+  return code;
 };
 
 Blockly.JSON['trigger_numeric_state'] = function (block) {
-  const text_entity_id = block.getFieldValue('entity_id');
-  const value_above = Blockly.JSON.valueToCode(block, 'above', Blockly.JSON.ORDER_NONE);
-  const value_below = Blockly.JSON.valueToCode(block, 'below', Blockly.JSON.ORDER_NONE);
-  const value_val_template = Blockly.JSON.valueToCode(block, 'val_template', Blockly.JSON.ORDER_NONE);
-  // TODO: Assemble JSON into code constiable.
-  let code = {TODO: '[[implement me!]]' };
+  const entityId = block.getFieldValue('entity_id');
+  const above = Blockly.JSON.valueToCode(block, 'above', Blockly.JSON.ORDER_NONE);
+  const below = Blockly.JSON.valueToCode(block, 'below', Blockly.JSON.ORDER_NONE);
+  const valueTemplate = Blockly.JSON.valueToCode(block, 'val_template', Blockly.JSON.ORDER_NONE);
+
+  const code = {
+    platform: 'numeric_state',
+    entity_id: entityId
+  };
+
+  Blockly.JSON.addField(code, 'above', above);
+  Blockly.JSON.addField(code, 'below', below);
+  Blockly.JSON.addField(code, 'value_template', valueTemplate);
+
   return code;
 };
 
 Blockly.JSON['trigger_state'] = function (block) {
-  const text_entity_id = block.getFieldValue('entity_id');
-  const value_from = Blockly.JSON.valueToCode(block, 'from', Blockly.JSON.ORDER_NONE);
-  const value_to = Blockly.JSON.valueToCode(block, 'to', Blockly.JSON.ORDER_NONE);
-  const value_for = Blockly.JSON.valueToCode(block, 'for', Blockly.JSON.ORDER_NONE);
-  // TODO: Assemble JSON into code constiable.
-  let code = {TODO: '[[implement me!]]' };
+  const entityId = block.getFieldValue('entity_id');
+  const from = Blockly.JSON.valueToCode(block, 'from', Blockly.JSON.ORDER_NONE);
+  const to = Blockly.JSON.valueToCode(block, 'to', Blockly.JSON.ORDER_NONE);
+  const forValue = Blockly.JSON.valueToCode(block, 'for', Blockly.JSON.ORDER_NONE);
+
+  const code = {
+    platform: 'state',
+    entity_id: entityId
+  };
+
+  Blockly.JSON.addField(code, 'from', from);
+  Blockly.JSON.addField(code, 'to', to);
+  Blockly.JSON.addField(code, 'for', forValue);
+
   return code;
 };
 
 Blockly.JSON['trigger_sun'] = function (block) {
   const dropdown_upordown = block.getFieldValue('upordown');
-  const value_offset = Blockly.JSON.valueToCode(block, 'offset', Blockly.JSON.ORDER_NONE);
-  // TODO: Assemble JSON into code constiable.
-  let code = '{ "platform": "sun"';
-  code += `,"event": "${dropdown_upordown}"`;
+  const offset = Blockly.JSON.valueToCode(block, 'offset', Blockly.JSON.ORDER_NONE);
+  const code = {
+    platform: 'sun',
+    event: dropdown_upordown
+  };
 
-  if (value_offset) {
-    code += `,"offset":${value_offset}`;
-  }
+  Blockly.JSON.addField(code, 'offset', offset);
 
-  code += '}\n';
-
-  return [code, Blockly.JSON.ORDER_NONE];
+  return code;
 };
 
 Blockly.JSON['trigger_template'] = function (block) {
-  const value_value_template = Blockly.JSON.valueToCode(block, 'value_template', Blockly.JSON.ORDER_NONE);
-  // TODO: Assemble JSON into code constiable.
-  let code = {TODO: '[[implement me!]]' };
+  const valueTemplate = Blockly.JSON.valueToCode(block, 'value_template', Blockly.JSON.ORDER_NONE);
+
+  const code = {
+    platform: 'template',
+    value_template: valueTemplate
+  };
   return code;
 };
 
 Blockly.JSON['trigger_time'] = function (block) {
   const dropdown_type = block.getFieldValue('type');
-  const value_after = Blockly.JSON.valueToCode(block, 'after', Blockly.JSON.ORDER_NONE);
+  const after = Blockly.JSON.valueToCode(block, 'after', Blockly.JSON.ORDER_NONE);
   const number_minutes = block.getFieldValue('minutes');
   const number_seconds = block.getFieldValue('seconds');
   const number_minutes_int = block.getFieldValue('minutes_int');
   const number_seconds_int = block.getFieldValue('seconds_int');
   // TODO: Assemble JSON into code constiable.
-  let code = {TODO: '[[implement me!]]' };
+  const code = { TODO: '[[implement me!]]' };
   return code;
 };
 
 Blockly.JSON['trigger_zone'] = function (block) {
-  const text_entity_id = block.getFieldValue('entity_id');
-  const dropdown_event = block.getFieldValue('event');
-  // TODO: Assemble JSON into code constiable.
-  let code = {TODO: '[[implement me!]]' };
+  const entityId = block.getFieldValue('entity_id');
+  const event = block.getFieldValue('event');
+
+  const code = {
+    platform: 'zone',
+    entity_id: entityId,
+    event
+  };
   return code;
 };

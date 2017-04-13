@@ -157,3 +157,40 @@ Blockly.JSON.statementToCode = function (block, name, mode = Blockly.JSON.MODE_A
 
   throw Error('unknown statement mode');
 };
+
+Blockly.JSON.valueToCode = function (block, name, outerOrder) {
+  if (isNaN(outerOrder)) {
+    // order is irrelevant in our blockly setup
+    throw Error(`Expecting valid order from block "${block.type}"`);
+  }
+  const targetBlock = block.getInputTargetBlock(name);
+  if (!targetBlock) {
+    return '';
+  }
+  const tuple = this.blockToCode(targetBlock);
+  if (tuple === '') {
+    // Disabled block.
+    return '';
+  }
+
+  const code = tuple[0];
+  if (!code && code !== 0) {
+    // replace null, undefined, NaN, empty string
+    // but keep number ZERO
+    return '';
+  }
+  return code;
+};
+
+Blockly.JSON.addField = function (code, name, value, condition) {
+  if (condition == null) {
+    // default condition matches output of valueToCode
+    // eslint-disable-next-line no-param-reassign
+    condition = (value !== null && value !== '');
+  }
+  if (condition) {
+    // eslint-disable-next-line no-param-reassign
+    code[name] = value;
+  }
+  return code;
+};

@@ -1,38 +1,65 @@
 /* eslint dot-notation: "off", camelcase: "off" */
 
 Blockly.JSON['action'] = function (block) {
-  const text_service = block.getFieldValue('service');
-  const statements_entity_id = Blockly.JSON.statementToCode(block, 'entity_id');
-  const statements_data = Blockly.JSON.statementToCode(block, 'data');
+  const service = Blockly.JSON.valueToCode(block, 'service', Blockly.JSON.ORDER_NONE);
+  const serviceBlock = block.getInputTargetBlock('service');
+
+  const entityId = Blockly.JSON.valueToCode(block, 'entity_id', Blockly.JSON.ORDER_NONE);
+
+  const data = Blockly.JSON.statementToCode(block, 'data');
   // TODO: Assemble JSON into code constiable.
-  let code = {TODO: '[[implement me!]]' };
+  const code = {};
+
+  if (serviceBlock && serviceBlock.type === 'val_template') {
+    code.service_template = service;
+  } else if (service !== '') {
+    code.service = service;
+  }
+
+  if (entityId !== '') {
+    // entity can be a single value or an array
+    code.entity_id = entityId;
+  }
+  if (data !== '') {
+    code.data = data;
+  }
+
+  // TODO: entity list
   return code;
 };
 
 Blockly.JSON['action_delay'] = function (block) {
-  const value_delay = Blockly.JSON.valueToCode(block, 'delay', Blockly.JSON.ORDER_NONE);
-  // TODO: Assemble JSON into code constiable.
-  let code = '{';
-  if (value_delay !== '') {
-    code += `{"delay": ${value_delay}\n`;
+  let delay = Blockly.JSON.valueToCode(block, 'delay', Blockly.JSON.ORDER_NONE);
+  if (delay === '') {
+    delay = null;
   }
-
-  code += '}';
+  const code = {
+    delay
+  };
   return code;
 };
 
 Blockly.JSON['action_wait'] = function (block) {
-  const value_wait = Blockly.JSON.valueToCode(block, 'wait', Blockly.JSON.ORDER_NONE);
-  const value_timeout = Blockly.JSON.valueToCode(block, 'timeout', Blockly.JSON.ORDER_NONE);
+  const waitTemplate = Blockly.JSON.valueToCode(block, 'wait', Blockly.JSON.ORDER_NONE);
+  const timeout = Blockly.JSON.valueToCode(block, 'timeout', Blockly.JSON.ORDER_NONE);
   // TODO: Assemble JSON into code constiable.
-  let code = {TODO: '[[implement me!]]' };
+  const code = {
+    wait_template: waitTemplate
+  };
+  if (timeout !== '') {
+    code.timeout = timeout;
+  }
   return code;
 };
 
 Blockly.JSON['action_event'] = function (block) {
-  const text_event = block.getFieldValue('event');
-  const value_event_data = Blockly.JSON.valueToCode(block, 'event_data', Blockly.JSON.ORDER_NONE);
-  // TODO: Assemble JSON into code constiable.
-  let code = {TODO: '[[implement me!]]' };
+  const event = block.getFieldValue('event');
+  const eventData = Blockly.JSON.statementToCode(block, 'event_data', Blockly.JSON.MODE_OBJECT);
+  const code = {
+    event
+  };
+  if (eventData !== '') {
+    code.event_data = eventData;
+  }
   return code;
 };

@@ -54,17 +54,9 @@ Blockly.JSON['condition_numeric_state'] = function (block) {
     entity_id: entityId
   };
 
-  if (above !== '') {
-    code.above = above;
-  }
-
-  if (below !== '') {
-    code.below = below;
-  }
-  if (valueTemplate && valueTemplate !== '') {
-    code.value_template = valueTemplate;
-  }
-
+  Blockly.JSON.addField(code, 'above', above);
+  Blockly.JSON.addField(code, 'below', below);
+  Blockly.JSON.addField(code, 'value_template', valueTemplate);
   return code;
 };
 
@@ -78,14 +70,8 @@ Blockly.JSON['condition_state'] = function (block) {
     entity_id: entityId
   };
 
-  if (state !== '') {
-    code.state = state;
-  }
-
-  if (forTime !== '') {
-    code.for = forTime;
-  }
-
+  Blockly.JSON.addField(code, 'state', state);
+  Blockly.JSON.addField(code, 'for', forTime);
   return code;
 };
 
@@ -96,10 +82,7 @@ Blockly.JSON['condition_template'] = function (block) {
     condition: 'template'
   };
 
-  if (valueTemplate !== '') {
-    code.value_template = valueTemplate;
-  }
-
+  Blockly.JSON.addField(code, 'value_template', valueTemplate);
   return code;
 };
 
@@ -112,16 +95,9 @@ Blockly.JSON['condition_time'] = function (block) {
     condition: 'time'
   };
 
-  if (after !== '') {
-    code.after = after;
-  }
-  if (before !== '') {
-    code.before = before;
-  }
-  if (weekday !== '') {
-    code.weekday = weekday;
-  }
-
+  Blockly.JSON.addField(code, 'after', after);
+  Blockly.JSON.addField(code, 'before', before);
+  Blockly.JSON.addField(code, 'weekday', weekday);
   return code;
 };
 
@@ -133,9 +109,6 @@ Blockly.JSON['condition_zone'] = function (block) {
     entity_id: entityId
   };
 
-  if (zone !== '') {
-    code.zone = zone;
-  }
-
+  Blockly.JSON.addField(code, 'zone', zone);
   return code;
 };

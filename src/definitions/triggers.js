@@ -51,7 +51,7 @@ Blockly.Blocks.trigger_state = {
     this.appendDummyInput().appendField('entity').appendField(new Blockly.FieldTextInput('[[entity id]]'), 'entity_id');
     this.appendValueInput('from').setCheck(['String', 'Number', 'Boolean']).setAlign(Blockly.ALIGN_RIGHT).appendField('from');
     this.appendValueInput('to').setCheck(['String', 'Number', 'Boolean']).setAlign(Blockly.ALIGN_RIGHT).appendField('to');
-    this.appendValueInput('for').setCheck(['String', 'val_time']).appendField("in 'to' state for at least");
+    this.appendValueInput('for').setCheck(['String', 'val_time', 'val_properties']).appendField("in 'to' state for at least");
     this.setPreviousStatement(true, 'trigger');
     this.setNextStatement(true, 'trigger');
     this.setColour(135);
@@ -100,19 +100,7 @@ Blockly.Blocks.trigger_time = {
   init() {
     this.appendDummyInput().appendField('TIME');
     this.appendDummyInput().appendField('trigger ').appendField(new Blockly.FieldDropdown([['on', 'on'], ['after', 'after'], ['interval', 'interval']]), 'type');
-    this.appendValueInput('after').setCheck(['String', 'val_time']).appendField('after');
-    this.appendDummyInput()
-      .appendField('on')
-      .appendField(new Blockly.FieldNumber(0, 0, 60), 'minutes')
-      .appendField('min, ')
-      .appendField(new Blockly.FieldNumber(0, 0, 60), 'seconds')
-      .appendField(' sec');
-    this.appendDummyInput()
-      .appendField('every')
-      .appendField(new Blockly.FieldNumber(0, 0, 60), 'minutes_int')
-      .appendField('min, ')
-      .appendField(new Blockly.FieldNumber(0, 0, 60), 'seconds_int')
-      .appendField(' sec');
+    this.appendValueInput('time').setCheck(['String', 'val_time']);
     this.setPreviousStatement(true, 'trigger');
     this.setNextStatement(true, 'trigger');
     this.setInputsInline(false);
@@ -124,6 +112,37 @@ Blockly.Blocks.trigger_time = {
     );
     this.setHelpUrl('https://home-assistant.io/docs/automation/trigger/#time-trigger');
   }
+/*
+  onchange() {
+    if (!this.workspace) {
+      // Block has been deleted.
+      return;
+    }
+    if (this.getSurroundParent() === null) {
+      // Orphan: Block is not connected to a parent
+      return;
+    }
+    const type = this.getFieldValue('type');
+    const inputInterval = this.getInput('interval_data');
+    const inputOn = this.getInput('on_data');
+    const inputAfter = this.getInput('after');
+
+    if (type === 'after') {
+      inputInterval.setVisible(false);
+      inputOn.setVisible(false);
+      inputAfter.setVisible(true);
+    } else if (type === 'on') {
+      inputInterval.setVisible(false);
+      inputOn.setVisible(true);
+      inputAfter.setVisible(false);
+    } else if (type === 'interval') {
+      inputInterval.setVisible(true);
+      inputOn.setVisible(false);
+      inputAfter.setVisible(false);
+    }
+    console.log('block type is set to' + type);
+  }
+*/
 };
 
 Blockly.Blocks.trigger_zone = {

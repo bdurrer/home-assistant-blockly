@@ -152,9 +152,9 @@ Blockly.Blocks.val_property = {
   init() {
     this.appendStatementInput('properties').setCheck('property').appendField('properties:');
     this.setInputsInline(true);
-    this.setOutput(true, ['property', 'data']);
+    this.setOutput(true, ['val_properties', 'data']);
     this.setColour(65);
-    this.setTooltip('key-value pair in YAML');
+    this.setTooltip('list of key-value pairs in YAML');
     this.setHelpUrl('https://home-assistant.io/docs/configuration/yaml/');
   }
 };
