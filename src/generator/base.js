@@ -1,3 +1,8 @@
+/**
+ * This file contains the custom blockly language definition to generate JSON objects (usually blockly generates a String).
+ * It does not contain any code specific to HA.
+ */
+
 Blockly.JSON = new Blockly.Generator('JSON');
 /**
 * Order of operation ENUMs.
@@ -42,25 +47,6 @@ Blockly.JSON.MODE_OBJECT = 2;
 Blockly.JSON.MODE_STRING = 3;
 
 // goog.asserts.ENABLE_ASSERTS = false;
-
-Blockly.JSON.workspaceToCode = function (workspace) {
-  const topBlocks = workspace.getTopBlocks(false);
-  const result = [];
-  for (let i = 0; i < topBlocks.length; i++) {
-    const block = topBlocks[i];
-
-    if (block.type === 'automation') {
-      const jsonStructure = this.generalBlockToObj(block);
-      result.push(jsonStructure); // JSON.stringify(json_structure, null, 4) + '\n\n';
-    }
-  }
-
-  if (result.length === 0) {
-    return null;
-  }
-
-  return result.length === 1 ? result[0] : result;
-};
 
 Blockly.JSON.generalBlockToObj = function (block) {
   if (block) {

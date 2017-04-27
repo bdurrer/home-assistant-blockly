@@ -7,7 +7,6 @@ Blockly.JSON['action'] = function (block) {
   const entityId = Blockly.JSON.valueToCode(block, 'entity_id', Blockly.JSON.ORDER_NONE);
 
   const data = Blockly.JSON.statementToCode(block, 'data');
-  // TODO: Assemble JSON into code constiable.
   const code = {};
 
   if (serviceBlock && serviceBlock.type === 'val_template') {
@@ -42,7 +41,6 @@ Blockly.JSON['action_delay'] = function (block) {
 Blockly.JSON['action_wait'] = function (block) {
   const waitTemplate = Blockly.JSON.valueToCode(block, 'wait', Blockly.JSON.ORDER_NONE);
   const timeout = Blockly.JSON.valueToCode(block, 'timeout', Blockly.JSON.ORDER_NONE);
-  // TODO: Assemble JSON into code constiable.
   const code = {
     wait_template: waitTemplate
   };

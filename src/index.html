@@ -27,10 +27,6 @@
 
 <xml xmlns="http://www.w3.org/1999/xhtml" id="toolbox" style="display: none;">
   <category name="Triggers" colour="#80a55b">
-    <block type="trigger_zone">
-      <field name="entity_id">[[entity id]]</field>
-      <field name="event">enter</field>
-    </block>
     <block type="trigger_sun">
       <field name="upordown">sunset</field>
     </block>
@@ -53,6 +49,13 @@
       <field name="seconds">0</field>
       <field name="minutes_int">0</field>
       <field name="seconds_int">0</field>
+    </block>
+    <block type="trigger_zone">
+      <field name="entity_id">[[entity id]]</field>
+      <field name="event">enter</field>
+    </block>
+    <block type="trigger_homeassistant">
+      <field name="event">start</field>
     </block>
   </category>
   <category name="Conditions" colour="#5b5ba5">
@@ -93,10 +96,6 @@
     <block type="val_number">
       <field name="number">0</field>
     </block>
-    <block type="val_property"></block>
-    <block type="property">
-      <field name="name">[[name]]</field>
-    </block>
     <block type="val_template">
       <field name="template">[[template]]</field>
     </block>
@@ -120,6 +119,12 @@
       <field name="sat">TRUE</field>
       <field name="sun">TRUE</field>
     </block>
+    <block type="val_property"></block>
+    <block type="property">
+      <field name="name">[[name]]</field>
+    </block>
+    <block type="val_array"></block>
+    <block type="array_element"></block>
   </category>
 </xml>
 <xml xmlns="http://www.w3.org/1999/xhtml" id="workspaceBlocks" style="display:none"></xml>

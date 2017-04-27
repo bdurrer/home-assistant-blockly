@@ -158,3 +158,27 @@ Blockly.Blocks.val_property = {
     this.setHelpUrl('https://home-assistant.io/docs/configuration/yaml/');
   }
 };
+
+Blockly.Blocks.array_element = {
+  init() {
+    this.appendValueInput('value').setCheck(null).appendField('element');
+    this.setInputsInline(true);
+    // this.setOutput(true, ["property", "data"]);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(330);
+    this.setTooltip('array element, to be used on an array-input');
+    this.setHelpUrl('https://home-assistant.io/docs/configuration/yaml/');
+  }
+};
+
+Blockly.Blocks.val_array = {
+  init() {
+    this.appendStatementInput('list').setCheck('array_element').appendField('list:');
+    this.setInputsInline(true);
+    this.setOutput(true, ['val_array']);
+    this.setColour(65);
+    this.setTooltip('list of elements in YAML');
+    this.setHelpUrl('https://home-assistant.io/docs/configuration/yaml/');
+  }
+};

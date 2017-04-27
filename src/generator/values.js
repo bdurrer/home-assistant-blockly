@@ -110,3 +110,15 @@ Blockly.JSON['val_property'] = function (block) {
   const code = properties;
   return [code, Blockly.JSON.ORDER_NONE];
 };
+
+Blockly.JSON['val_array'] = function (block) {
+  const list = Blockly.JSON.statementToCode(block, 'list', Blockly.JSON.MODE_ARRAY);
+  const code = list;
+  return [code, Blockly.JSON.ORDER_NONE];
+};
+
+Blockly.JSON['array_element'] = function (block) {
+  const value = Blockly.JSON.valueToCode(block, 'value', Blockly.JSON.ORDER_NONE);
+  const code = value;
+  return [code, Blockly.JSON.ORDER_NONE];
+};

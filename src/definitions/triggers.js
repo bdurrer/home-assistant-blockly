@@ -99,8 +99,12 @@ Blockly.Blocks.trigger_template = {
 Blockly.Blocks.trigger_time = {
   init() {
     this.appendDummyInput().appendField('TIME');
-    this.appendDummyInput().appendField('trigger ').appendField(new Blockly.FieldDropdown([['on', 'on'], ['after', 'after'], ['interval', 'interval']]), 'type');
-    this.appendValueInput('time').setCheck(['String', 'val_time']);
+    this.appendDummyInput().appendField('trigger ').appendField(new Blockly.FieldDropdown([['on/interval', 'on/interval'], ['after', 'after']]), 'type');
+    this.appendDummyInput().appendField('hours').appendField(new Blockly.FieldTextInput(''), 'hours');
+    this.appendDummyInput().appendField('minutes').appendField(new Blockly.FieldTextInput('0'), 'minutes');
+    this.appendDummyInput().appendField('seconds').appendField(new Blockly.FieldTextInput('0'), 'seconds');
+
+    // this.appendValueInput('time').setCheck(['String', 'val_time', 'val_property']);
     this.setPreviousStatement(true, 'trigger');
     this.setNextStatement(true, 'trigger');
     this.setInputsInline(false);
@@ -158,5 +162,19 @@ Blockly.Blocks.trigger_zone = {
       'you need to have setup a device tracker platform that supports reporting GPS coordinates.'
     );
     this.setHelpUrl('https://home-assistant.io/docs/automation/trigger/#zone-trigger');
+  }
+};
+
+Blockly.Blocks.trigger_homeassistant = {
+  init() {
+    this.appendDummyInput().appendField('HOME ASSISTANT');
+    this.appendDummyInput().appendField('on ').appendField(new Blockly.FieldDropdown([['start', 'start'], ['shutdown', 'shutdown']]), 'event');
+    this.setPreviousStatement(true, 'trigger');
+    this.setNextStatement(true, 'trigger');
+    this.setColour(135);
+    this.setTooltip(
+      'Use this platform to trigger when Home Assistant starts up and shuts down.'
+    );
+    this.setHelpUrl('https://home-assistant.io/docs/automation/trigger/#home-assistant-trigger');
   }
 };

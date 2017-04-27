@@ -2,7 +2,7 @@ Blockly.Blocks.action = {
   init() {
     this.appendDummyInput().appendField('ACTION');
     this.appendValueInput('service').setCheck(['String', 'val_text', 'val_template']).appendField('service:');
-    this.appendValueInput('entity_id').setCheck(['String', 'val_text', 'val_template']).appendField('entity id:');
+    this.appendValueInput('entity_id').setCheck(['String', 'val_text', 'val_template', 'val_array']).appendField('entity id:');
     // this.appendStatementInput('entity_id').setCheck(['String', 'val_text']).appendField('entity id:');
     this.appendStatementInput('data').setCheck(['String', 'val_properties']).appendField('data:');
     this.setPreviousStatement(true, 'action');

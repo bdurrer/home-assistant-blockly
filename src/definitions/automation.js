@@ -15,7 +15,7 @@ Blockly.Blocks.automation = {
   },
   onchange() {
     const conditions = Blockly.JSON.statementToCode(this, 'conditions', Blockly.JSON.MODE_ARRAY);
-    const msg = 'Please use a LOGIC condition block to combine multiple blocks';
+    const msg = 'Please use a LOGIC condition block to combine multiple conditions';
 
     if (conditions.length > 1) {
       this.setWarningText(msg);

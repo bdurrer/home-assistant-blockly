@@ -89,14 +89,25 @@ Blockly.JSON['trigger_template'] = function (block) {
 };
 
 Blockly.JSON['trigger_time'] = function (block) {
-  const dropdown_type = block.getFieldValue('type');
-  const after = Blockly.JSON.valueToCode(block, 'after', Blockly.JSON.ORDER_NONE);
-  const number_minutes = block.getFieldValue('minutes');
-  const number_seconds = block.getFieldValue('seconds');
-  const number_minutes_int = block.getFieldValue('minutes_int');
-  const number_seconds_int = block.getFieldValue('seconds_int');
-  // TODO: Assemble JSON into code constiable.
-  const code = { TODO: '[[implement me!]]' };
+  const type = block.getFieldValue('type');
+  // const time = Blockly.JSON.valueToCode(block, 'time', Blockly.JSON.ORDER_NONE);
+  let hours = block.getFieldValue('hours');
+  const minutes = block.getFieldValue('minutes');
+  const seconds = block.getFieldValue('seconds');
+  const code = {
+    platform: 'time'
+  };
+
+  if (type === 'after') {
+    if (hours === '') {
+      hours = 0;
+    }
+    code.after = `${hours}:${minutes}:${seconds}`;
+  } else {
+    code.minutes = minutes;
+    code.seconds = seconds;
+  }
+
   return code;
 };
 
@@ -107,6 +118,16 @@ Blockly.JSON['trigger_zone'] = function (block) {
   const code = {
     platform: 'zone',
     entity_id: entityId,
+    event
+  };
+  return code;
+};
+
+Blockly.JSON['trigger_homeassistant'] = function (block) {
+  const event = block.getFieldValue('event');
+
+  const code = {
+    platform: 'homeassistant',
     event
   };
   return code;
