@@ -34,23 +34,20 @@ function highlightUndefValues(str, p1) {
 }
 
 function onWorkspaceChange() {
-  const codeAsString = Blockly.JSON.workspaceToCode(workspace);
-  let compiledJsonCode = '';
+  const compiledJsonCode = Blockly.JSON.workspaceToCode(workspace);
   let highlightedCode = '';
   let yamlCode = '';
   try {
-    compiledJsonCode = JSON.parse(codeAsString);
-    compiledJsonCode = JSON.stringify(compiledJsonCode, null, 2);
-    highlightedCode = compiledJsonCode.replace(/\[\[(.*?)\]\]/ig, highlightUndefValues);
+    const jsonAsString = JSON.stringify(compiledJsonCode, null, 2);
+    highlightedCode = jsonAsString.replace(/\[\[(.*?)\]\]/ig, highlightUndefValues);
   } catch (e) {
     /* eslint-disable no-console */
-    console.log('error parsing the input!');
-    console.log(codeAsString);
+    console.log('error processing the blockly code!');
+    console.log(compiledJsonCode);
     console.log(e);
     /* eslint-enable no-console */
 
     // show broken code for debugging puropses
-    compiledJsonCode = `ERROR in code:\n\n${codeAsString}`;
     highlightedCode = compiledJsonCode;
   }
 
@@ -68,6 +65,9 @@ workspace.addChangeListener(onWorkspaceChange);
 
 BlocklyStorage.backupOnUnload();
 
+/**
+ * load blocks from local storage, or insert the default automation block
+ */
 function restore() {
   BlocklyStorage.restoreBlocks();
   const blocks = workspace.getTopBlocks(false);

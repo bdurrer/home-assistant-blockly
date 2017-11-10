@@ -27,7 +27,8 @@ module.exports = {
       './src/**/*.ico',
       './src/**/*.jpg',
       './src/**/*.eot',
-      './src/**/*.css'
+      './src/**/*.css',
+      './blockly/blockly_compressed.js'
     ]
   },
   serverPort: 8088,

@@ -61,7 +61,26 @@ Blockly.Blocks.condition_numeric_state = {
       'This type of condition attempts to parse the state of specified entity as a number and triggers if the value matches all of the above or below thresholds.'
     );
     this.setHelpUrl('https://home-assistant.io/docs/scripts/conditions/#numeric-state-condition');
+  },
+  onchange() {
+    if (!this.workspace) {
+      // Block has been deleted.
+      return;
+    }
+    if (this.getSurroundParent() === null) {
+      // Orphan: Block is not connected to a parent
+      return;
+    }
+    const above = Blockly.JSON.valueToCode(this, 'above', Blockly.JSON.ORDER_NONE);
+    const below = Blockly.JSON.valueToCode(this, 'below', Blockly.JSON.ORDER_NONE);
+    if (above !== '' || below !== '') {
+      this.setWarningText(null);
+    } else {
+      this.setWarningText('at least one of "above" or "below" must be set');
+    }
+
   }
+  // TODO check that at least one of above or below is set
 };
 
 Blockly.Blocks.condition_state = {

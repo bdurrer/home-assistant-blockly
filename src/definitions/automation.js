@@ -14,9 +14,22 @@ Blockly.Blocks.automation = {
     this.setHelpUrl('https://home-assistant.io/docs/automation/');
   },
   onchange() {
-    const conditions = Blockly.JSON.statementToCode(this, 'conditions', true);
+    const conditions = Blockly.JSON.statementToCode(this, 'conditions', Blockly.JSON.MODE_ARRAY);
+    const msg = 'Please use a LOGIC condition block to combine multiple conditions';
+
     if (conditions.length > 1) {
-      this.setWarningText('Please use a LOGIC condition block to combine multiple blocks');
+      this.setWarningText(msg);
+    } else {
+      this.setWarningText(null);
     }
+
+    /*
+    const firstBlock = this.getInputTargetBlock('conditions');
+    if (conditions.length > 1) {
+      firstBlock.setWarningText(msg);
+    } else if (conditions.length === 1) {
+      firstBlock.setWarningText(null);
+    }
+    */
   }
 };

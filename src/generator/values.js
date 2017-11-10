@@ -1,8 +1,8 @@
 /* eslint dot-notation: "off", camelcase: "off" */
 
 Blockly.JSON['val_text'] = function (block) {
-  const text_text = block.getFieldValue('text');
-  const code = `"${text_text}"`;
+  const text = block.getFieldValue('text');
+  const code = text;
   return [code, Blockly.JSON.ORDER_NONE];
 };
 
@@ -22,19 +22,19 @@ Blockly.JSON['val_time_offset'] = function (block) {
     number_seconds = `0${number_seconds}`;
   }
 
-  const code = `"${plusminus}${number_hours}:${number_minutes}:${number_seconds}"`;
+  const code = `${plusminus}${number_hours}:${number_minutes}:${number_seconds}`;
   return [code, Blockly.JSON.ORDER_NONE];
 };
 
 Blockly.JSON['val_template'] = function (block) {
-  const text_template = block.getFieldValue('template');
-  const code = `"${text_template}"`;
+  const template = block.getFieldValue('template');
+  const code = template;
   return [code, Blockly.JSON.ORDER_NONE];
 };
 
 Blockly.JSON['val_number'] = function (block) {
-  const value_number = block.getFieldValue('number');
-  const code = `${Number(value_number)}`;
+  const number = block.getFieldValue('number');
+  const code = Number(number);
   return [code, Blockly.JSON.ORDER_NONE];
 };
 
@@ -53,7 +53,7 @@ Blockly.JSON['val_time'] = function (block) {
     number_seconds = `0${number_seconds}`;
   }
 
-  const code = `"${number_hours}:${number_minutes}:${number_seconds}"`;
+  const code = `${number_hours}:${number_minutes}:${number_seconds}`;
   return [code, Blockly.JSON.ORDER_NONE];
 };
 
@@ -90,18 +90,15 @@ Blockly.JSON['val_weekday'] = function (block) {
   }
 
   // array to comma-separated list ... as string
-  const code = `"${days.join(',')}"`;
+  const code = `${days.join(',')}`;
   return [code, Blockly.JSON.ORDER_NONE];
 };
 
 Blockly.JSON['property'] = function (block) {
   const name = block.getFieldValue('name');
-  let value = Blockly.JSON.valueToCode(block, 'value', Blockly.JSON.ORDER_NONE);
-  if (value === null || value === '') {
-    // json2yaml will remove that, but it's required for valid json.
-    value = 'null';
-  }
-  const code = `"${name}":${value}`;
+  const value = Blockly.JSON.valueToCode(block, 'value', Blockly.JSON.ORDER_NONE);
+  const code = {};
+  code[name] = value;
   return [code, Blockly.JSON.ORDER_NONE];
 };
 
@@ -109,19 +106,19 @@ Blockly.JSON['property'] = function (block) {
 * Let's us use multiple properties as 'value' of a field so that we can have sub-properties.
 */
 Blockly.JSON['val_property'] = function (block) {
-  const properties = Blockly.JSON.statementToCode(block, 'properties', true);
-  let code = '{';
+  const properties = Blockly.JSON.statementToCode(block, 'properties', Blockly.JSON.MODE_OBJECT);
+  const code = properties;
+  return [code, Blockly.JSON.ORDER_NONE];
+};
 
-  // properties is an array of strings with "name: value"
-  for (let i = 0; i < properties.length; i++) {
-    if (properties[i] !== '') {
-      if (i > 0) {
-        code += ', ';
-      }
-      code += properties[i];
-    }
-  }
+Blockly.JSON['val_array'] = function (block) {
+  const list = Blockly.JSON.statementToCode(block, 'list', Blockly.JSON.MODE_ARRAY);
+  const code = list;
+  return [code, Blockly.JSON.ORDER_NONE];
+};
 
-  code += '}\n';
+Blockly.JSON['array_element'] = function (block) {
+  const value = Blockly.JSON.valueToCode(block, 'value', Blockly.JSON.ORDER_NONE);
+  const code = value;
   return [code, Blockly.JSON.ORDER_NONE];
 };
